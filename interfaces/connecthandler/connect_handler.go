@@ -2,8 +2,9 @@ package connecthandler
 
 import (
 	"context"
-	"errors"
 	"net/netip"
+
+	"github.com/pkg/errors"
 
 	"github.com/bufbuild/connect-go"
 	mtrv1alpha1 "github.com/cuteip/eyeroute/gen/eyeroute/mtr/v1alpha1"
@@ -24,16 +25,17 @@ func (m MtrServer) ExecuteMtr(
 ) (*connect.Response[mtrv1alpha1.ExecuteMtrResponse], error) {
 	targetIPAddr, err := netip.ParseAddr(req.Msg.IpAddress)
 	if err != nil {
-		return nil, err
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
 
-	if req.Msg.ReportCycles > 10 {
-		return nil, errors.New("report cycles must be <= 10")
+	const reportCyclesLimit = 10
+	if req.Msg.ReportCycles > reportCyclesLimit {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.Errorf("report cycles must be <= %d", reportCyclesLimit))
 	}
 
 	report, err := m.Mtr.Run(targetIPAddr, int(req.Msg.ReportCycles))
 	if err != nil {
-		return nil, err
+		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
 	var hubs []*mtrv1alpha1.ReportHub

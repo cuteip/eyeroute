@@ -1,7 +1,6 @@
 package run
 
 import (
-	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/netip"
@@ -42,16 +41,6 @@ func (e mtrExecuterDummy) Execute(host netip.Addr, count int) ([]byte, error) {
 }
 
 func run(cmd *cobra.Command, args []string) error {
-	log.Println("start")
-
-	// m := mtr.New(mtr.NewExecuter())
-	// report, err := m.Run(netip.MustParseAddr(`1.1.1.1`), 10)
-	// if err != nil {
-	// 	return err
-	// }
-
-	// log.Println(report)
-
 	isDummy, err := cmd.Flags().GetBool("dummy")
 	if err != nil {
 		return err

@@ -8,6 +8,7 @@ import (
 	"net/netip"
 	"net/url"
 
+	"github.com/cuteip/eyeroute/front"
 	"github.com/cuteip/eyeroute/gen/eyeroute/mtr/v1alpha1/mtrv1alpha1connect"
 	"github.com/cuteip/eyeroute/interfaces/connecthandler"
 	"github.com/cuteip/eyeroute/mtr"
@@ -71,6 +72,12 @@ func run(cmd *cobra.Command, args []string) error {
 		}
 
 		mux.Handle("/", httputil.NewSingleHostReverseProxy(upstreamFrontURL))
+	} else {
+		buildFS, err := front.GetBuildFS()
+		if err != nil {
+			return err
+		}
+		mux.Handle("/", http.FileServer(buildFS))
 	}
 
 	http.ListenAndServe(

@@ -1,12 +1,12 @@
 package run
 
 import (
+	_ "embed"
+	"fmt"
 	"net/http"
 	"net/http/httputil"
 	"net/netip"
 	"net/url"
-
-	_ "embed"
 
 	"github.com/cuteip/eyeroute/gen/eyeroute/mtr/v1alpha1/mtrv1alpha1connect"
 	"github.com/cuteip/eyeroute/interfaces/connecthandler"
@@ -57,6 +57,7 @@ func run(cmd *cobra.Command, args []string) error {
 	api.Handle(mtrv1alpha1connect.NewMtrServiceHandler(mtrServer))
 
 	mux := http.NewServeMux()
+	mux.Handle(fmt.Sprintf("/%s/", mtrv1alpha1connect.MtrServiceName), api)
 
 	// front/ を編集するときはそっちにプロキシしたほうがやりやすいので、そのための機能
 	upstreamFrontURLStr, err := cmd.Flags().GetString("dev-upstream-front-url")
@@ -72,7 +73,6 @@ func run(cmd *cobra.Command, args []string) error {
 		mux.Handle("/", httputil.NewSingleHostReverseProxy(upstreamFrontURL))
 	}
 
-	mux.Handle("/api/", http.StripPrefix("/api", api))
 	http.ListenAndServe(
 		"127.0.0.1:8080",
 		h2c.NewHandler(mux, &http2.Server{}),

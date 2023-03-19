@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
-import { ExecuteMtrRequest, ExecuteMtrResponse, ReportHub } from './gen/eyeroute/mtr/v1alpha1/mtr_pb';
-import { MtrService } from './gen/eyeroute/mtr/v1alpha1/mtr_connect';
-import { createCallbackClient, createPromiseClient } from '@bufbuild/connect';
+import { createCallbackClient } from '@bufbuild/connect';
 import { createConnectTransport } from '@bufbuild/connect-web';
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom/client';
+import { MtrService } from './gen/eyeroute/mtr/v1alpha1/mtr_connect';
+import { ExecuteMtrRequest, ReportHub } from './gen/eyeroute/mtr/v1alpha1/mtr_pb';
+import reportWebVitals from './reportWebVitals';
 
-function App() {
+function Mtr() {
   const [ipAddress, setIpAddress] = useState("")
   const [reportHubs, setReportHubs] = useState<ReportHub[]>([])
 
@@ -38,9 +39,7 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <h1>eyeroute (Looking Glass)</h1>
-
+    <div>
       <h2>mtr</h2>
       <input onChange={(e) => setIpAddress(e.target.value)} />
       <button onClick={onClickExecuteButton}>実行</button>
@@ -79,4 +78,4 @@ function App() {
   );
 }
 
-export default App;
+export default Mtr;

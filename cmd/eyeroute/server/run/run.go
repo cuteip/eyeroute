@@ -31,6 +31,7 @@ func RootCmd() *cobra.Command {
 
 	rootCmd.Flags().Bool("dummy", false, "enable dummy response")
 	rootCmd.Flags().String("dev-upstream-front-url", "", "for develop: upstream url (default: serve static files in Go embed). (ex: http://127.0.0.1:3000)")
+	rootCmd.Flags().String("listen-addr", "127.0.0.1:8080", "Listen Address")
 
 	return rootCmd
 }
@@ -80,8 +81,13 @@ func run(cmd *cobra.Command, args []string) error {
 		mux.Handle("/", http.FileServer(buildFS))
 	}
 
+	listenAddr, err := cmd.Flags().GetString("listen-addr")
+	if err != nil {
+		return err
+	}
+
 	http.ListenAndServe(
-		"127.0.0.1:8080",
+		listenAddr,
 		h2c.NewHandler(mux, &http2.Server{}),
 	)
 

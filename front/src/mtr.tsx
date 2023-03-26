@@ -1,7 +1,6 @@
 import { createCallbackClient } from '@bufbuild/connect';
 import { createConnectTransport } from '@bufbuild/connect-web';
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
+import { useState } from 'react';
 import { MtrService } from './gen/eyeroute/mtr/v1alpha1/mtr_connect';
 import { ExecuteMtrRequest, ReportHub } from './gen/eyeroute/mtr/v1alpha1/mtr_pb';
 

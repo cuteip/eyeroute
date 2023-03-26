@@ -3,6 +3,7 @@ package run
 import (
 	_ "embed"
 	"fmt"
+	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/netip"
@@ -86,10 +87,9 @@ func run(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	http.ListenAndServe(
+	log.Printf("listen ... %s\n", listenAddr)
+	return http.ListenAndServe(
 		listenAddr,
 		h2c.NewHandler(mux, &http2.Server{}),
 	)
-
-	return nil
 }

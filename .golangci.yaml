@@ -1,0 +1,4 @@
+run:
+  skip-dirs:
+    # front/front.go いるがそれを含めると CI 上のセットアップが手間になるので一旦無視
+    - front

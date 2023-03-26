@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { MtrService } from './gen/eyeroute/mtr/v1alpha1/mtr_connect';
 import { ExecuteMtrRequest, ReportHub } from './gen/eyeroute/mtr/v1alpha1/mtr_pb';
-import reportWebVitals from './reportWebVitals';
 
 function Mtr() {
   const [ipAddress, setIpAddress] = useState("")

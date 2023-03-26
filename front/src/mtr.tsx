@@ -13,7 +13,7 @@ function Mtr() {
   const client = createCallbackClient(
     MtrService,
     createConnectTransport({
-      baseUrl: "http://127.0.0.1:8080/",
+      baseUrl: "/",
     })
   )
 

@@ -12,4 +12,6 @@ plugins:
     opt: target=ts
   - plugin: buf.build/bufbuild/connect-es
     out: front/src/gen
-    opt: target=ts
+    opt:
+      - target=ts
+      - import_extension=none

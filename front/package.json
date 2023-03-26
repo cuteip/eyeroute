@@ -23,6 +23,7 @@
     "lint": "run-s lint:*",
     "lint:eslint": "eslint ./src",
     "lint:prettier": "prettier --check .",
+    "lint:depcheck": "depcheck --skip-missing",
     "fix": "run-s fix:*",
     "fix:eslint": "eslint --fix ./src",
     "fix:prettier": "prettier --write ."
@@ -48,6 +49,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
+    "depcheck": "^1.4.3",
     "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-react": "^7.32.2",

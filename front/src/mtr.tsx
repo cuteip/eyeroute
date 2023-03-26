@@ -1,40 +1,43 @@
-import { createCallbackClient } from '@bufbuild/connect';
-import { createConnectTransport } from '@bufbuild/connect-web';
-import { useState } from 'react';
-import { MtrService } from './gen/eyeroute/mtr/v1alpha1/mtr_connect';
-import { ExecuteMtrRequest, ReportHub } from './gen/eyeroute/mtr/v1alpha1/mtr_pb';
+import { createCallbackClient } from "@bufbuild/connect";
+import { createConnectTransport } from "@bufbuild/connect-web";
+import { useState } from "react";
+import { MtrService } from "./gen/eyeroute/mtr/v1alpha1/mtr_connect";
+import {
+  ExecuteMtrRequest,
+  ReportHub,
+} from "./gen/eyeroute/mtr/v1alpha1/mtr_pb";
 
 function Mtr() {
-  const [ipAddress, setIpAddress] = useState("")
-  const [reportHubs, setReportHubs] = useState<ReportHub[]>([])
+  const [ipAddress, setIpAddress] = useState("");
+  const [reportHubs, setReportHubs] = useState<ReportHub[]>([]);
 
   const client = createCallbackClient(
     MtrService,
     createConnectTransport({
       baseUrl: "/",
     })
-  )
+  );
 
   const onClickExecuteButton = () => {
     if (ipAddress === "") {
-      console.error("IP Address is empty!")
+      console.error("IP Address is empty!");
     }
 
     const executeMtrReq = new ExecuteMtrRequest({
       ipAddress: ipAddress,
       reportCycles: 10,
-    })
+    });
 
     client.executeMtr(executeMtrReq, (err, res) => {
       if (err) {
-        console.error(err)
-        return
+        console.error(err);
+        return;
       }
 
-      console.log(res)
-      setReportHubs(res.hubs)
-    })
-  }
+      console.log(res);
+      setReportHubs(res.hubs);
+    });
+  };
 
   return (
     <div>

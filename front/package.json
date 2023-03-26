@@ -6,11 +6,6 @@
     "@bufbuild/connect": "^0.8.4",
     "@bufbuild/connect-web": "^0.8.4",
     "@bufbuild/protobuf": "^1.1.1",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.16",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@types/react-router-dom": "^5.3.3",
@@ -51,9 +46,6 @@
     ]
   },
   "devDependencies": {
-    "@bufbuild/buf": "^1.15.0-1",
-    "@bufbuild/protoc-gen-connect-es": "^0.8.4",
-    "@bufbuild/protoc-gen-es": "^1.1.1",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
     "eslint": "^8.36.0",

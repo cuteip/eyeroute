@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package eyeroute.mtr.v1alpha1;
+
+option go_package = "github.com/cuteip/eyeroute/gen/eyeroute/mtr/v1alpha1;mtrv1alpha1";
+
+message ExecuteMtrRequest {
+  // 宛先 IP アドレス
+  string ip_address = 1;
+
+  // 実行回数
+  // mtr の -c, --report-cycles に該当
+  int32 report_cycles = 2;
+}
+
+message ExecuteMtrResponse {
+  repeated ReportHub hubs = 1;
+}
+
+message ReportHub {
+  int32 count = 1;
+  string host = 2;
+  float loss = 3;
+  int32 sent = 4;
+  float last = 5;
+  float avg = 6;
+  float best = 7;
+  float worst = 8;
+  float stdev = 9;
+}
+
+service MtrService {
+  rpc ExecuteMtr(ExecuteMtrRequest) returns (ExecuteMtrResponse) {}
+}

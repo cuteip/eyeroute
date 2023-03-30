@@ -6,6 +6,7 @@ import (
 	"net/netip"
 	"os/exec"
 	"strconv"
+	"strings"
 )
 
 type Mtr struct {
@@ -30,13 +31,39 @@ type Report struct {
 	Hubs []ReportHub `json:"hubs"`
 }
 
+// mtr 0.94 では 0 のように 10 進数の int で出力される
+// mtr 0.93 では 0x0 のように 16 進数の string で出力される
+// UnmarshalJSON() を細工するため、独自に型を定義する
+type reportMtrTos int
+
+func (t *reportMtrTos) UnmarshalJSON(b []byte) error {
+	// まず、int としてパースしてみる
+	var tosInt int
+	err := json.Unmarshal(b, &tosInt)
+	if err == nil {
+		// パースに成功したので終了
+		*t = reportMtrTos(tosInt)
+		return nil
+	}
+
+	// 素直に int にパースできなかったので 16 進数として扱いパースを試みる
+	tosString := strings.ReplaceAll(string(b), `"`, "")
+	tosInt64, err := strconv.ParseInt(tosString, 0, 64)
+	if err != nil {
+		return err
+	}
+
+	*t = reportMtrTos(tosInt64)
+	return nil
+}
+
 type ReportMtr struct {
-	Src        string `json:"src"`
-	Dst        string `json:"dst"`
-	Tos        int    `json:"tos"`
-	Tests      int    `json:"tests"`
-	Psize      string `json:"psize"`
-	Bitpattern string `json:"bitpattern"`
+	Src        string       `json:"src"`
+	Dst        string       `json:"dst"`
+	Tos        reportMtrTos `json:"tos"`
+	Tests      int          `json:"tests"`
+	Psize      string       `json:"psize"`
+	Bitpattern string       `json:"bitpattern"`
 }
 
 type ReportHub struct {

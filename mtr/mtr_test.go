@@ -1,6 +1,7 @@
 package mtr
 
 import (
+	"fmt"
 	"io"
 	"net/netip"
 	"os"
@@ -10,10 +11,12 @@ import (
 )
 
 // テスト用
-type ExecuterFake struct{}
+type ExecuterFake struct {
+	filename string
+}
 
 func (e *ExecuterFake) Execute(host netip.Addr, count int) ([]byte, error) {
-	f, err := os.Open("../testdata/mtr/stdout1.json")
+	f, err := os.Open(fmt.Sprintf("../testdata/mtr/%s", e.filename))
 	if err != nil {
 		return nil, err
 	}
@@ -27,12 +30,53 @@ func (e *ExecuterFake) Execute(host netip.Addr, count int) ([]byte, error) {
 
 func TestMtr_Run(t *testing.T) {
 	tests := []struct {
-		name    string
-		want    Report
-		wantErr bool
+		name     string
+		filename string
+		want     Report
+		wantErr  bool
 	}{
 		{
-			name: "test",
+			name:     "version 0.94 の出力を扱える",
+			filename: "mtr_0.94_stdout1.json",
+			want: Report{
+				Mtr: ReportMtr{
+					Src:        "fake-host",
+					Dst:        "1.1.1.1",
+					Tos:        0,
+					Tests:      10,
+					Psize:      "64",
+					Bitpattern: "0x00",
+				},
+				Hubs: []ReportHub{
+					{
+						Count: 1,
+						Host:  "192.168.0.1",
+						Loss:  0.0,
+						Snt:   10,
+						Last:  0.206,
+						Avg:   0.212,
+						Best:  0.176,
+						Wrst:  0.26,
+						StDev: 0.026,
+					},
+					{
+						Count: 2,
+						Host:  "192.168.1.1",
+						Loss:  0.0,
+						Snt:   10,
+						Last:  0.392,
+						Avg:   0.356,
+						Best:  0.324,
+						Wrst:  0.394,
+						StDev: 0.027,
+					},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name:     "version 0.93 の出力を扱える",
+			filename: "mtr_0.93_stdout1.json",
 			want: Report{
 				Mtr: ReportMtr{
 					Src:        "fake-host",
@@ -72,7 +116,7 @@ func TestMtr_Run(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			e := &ExecuterFake{}
+			e := &ExecuterFake{filename: tt.filename}
 			m := &Mtr{
 				Executer: e,
 			}

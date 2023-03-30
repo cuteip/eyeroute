@@ -1,0 +1,30 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: go.mod
+
+      - name: Prepare Test
+        # front/front.go で読み込んでいる都合上、front/build/ 以下に何かファイルが存在していなければならないため
+        run: touch front/build/index.html
+
+      - name: Run test
+        run: go test -v ./...

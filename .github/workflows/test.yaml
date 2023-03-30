@@ -24,7 +24,9 @@ jobs:
 
       - name: Prepare Test
         # front/front.go で読み込んでいる都合上、front/build/ 以下に何かファイルが存在していなければならないため
-        run: touch front/build/index.html
+        run: |
+          mkdir front/build
+          touch front/build/index.html
 
       - name: Run test
         run: go test -v ./...

@@ -6,6 +6,10 @@ eyeroute-embed: front-build
 eyeroute:
 	go build ./cmd/eyeroute
 
+.PHONY: eyeroute-cli
+eyeroute-cli:
+	go build ./cmd/eyeroute-cli
+
 .PHONY: front-build
 front-build:
 	cd front && npm run build

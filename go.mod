@@ -7,7 +7,7 @@ require (
 	github.com/google/go-cmp v0.5.9
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.7.0
-	golang.org/x/net v0.9.0
+	golang.org/x/net v0.10.0
 	google.golang.org/protobuf v1.30.0
 )
 

@@ -3,7 +3,7 @@ module github.com/cuteip/eyeroute
 go 1.20
 
 require (
-	github.com/bufbuild/connect-go v1.7.0
+	github.com/bufbuild/connect-go v1.8.0
 	github.com/google/go-cmp v0.5.9
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.7.0

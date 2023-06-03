@@ -20,6 +20,14 @@ func RootCmd() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:   "mtr [IP Address]",
 		Short: "execute mtr",
+		Long: `
+Example:
+  $ ./eyeroute-cli mtr --server https://eyeroute.example.com 192.0.2.1
+  | HOP |    HOST     | SENT | LAST | AVG | BEST | WORST | STDEV |
+  |-----|-------------|------|------|-----|------|-------|-------|
+  |   1 | 192.168.0.1 |   10 |  0.2 | 0.2 |  0.2 |   0.3 |   0.0 |
+  |   2 | 192.168.1.1 |   10 |  0.4 | 0.4 |  0.3 |   0.4 |   0.0 |
+`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return run(cmd, args)
 		},

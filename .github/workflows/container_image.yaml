@@ -28,6 +28,15 @@ jobs:
         run: |
           echo "sha_short=$(git rev-parse --short HEAD)" >> ${GITHUB_OUTPUT}
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: front/.tool-versions
+
+      - name: Install Dependencies
+        run: npm install --frozen-lockfile
+        working-directory: front/
+
       - name: Build frontend
         run: |
           make front-build

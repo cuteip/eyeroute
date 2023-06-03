@@ -2,3 +2,11 @@ run:
   skip-dirs:
     # front/front.go いるがそれを含めると CI 上のセットアップが手間になるので一旦無視
     - front
+
+issues:
+  exclude-rules:
+    # MarkFlagRequired() の返り値 error は無視してもよい
+    # cmd.Flags().GetString() の返り値 error に引っ掛かる
+    - linters:
+        - errcheck
+      source: "MarkFlagRequired"
